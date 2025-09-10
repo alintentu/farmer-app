@@ -8,6 +8,24 @@ const routes: RouteRecordRaw[] = [
     redirect: '/dashboard'
   },
   {
+    path: '/admin/users',
+    name: 'AdminUsers',
+    component: () => import('@/views/admin/users/UserList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/users/invite',
+    name: 'AdminUserInvite',
+    component: () => import('@/views/admin/users/UserInvite.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/users/:id',
+    name: 'AdminUserEdit',
+    component: () => import('@/views/admin/users/UserEdit.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/admin/content/pdfs',
     name: 'AdminContentPdfs',
     component: () => import('@/views/admin/content/PdfList.vue'),

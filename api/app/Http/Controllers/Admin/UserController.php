@@ -13,6 +13,12 @@ use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {
+    public function show(string $id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
     public function index(Request $request)
     {
         $q = $request->string('q')->toString();
@@ -91,4 +97,3 @@ class UserController extends Controller
         return response()->json($user);
     }
 }
-

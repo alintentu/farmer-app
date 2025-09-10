@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['role:owner|admin'])->prefix('admin')->name('admin.')->group(function () {
         // Users
         Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index']);
+        Route::get('users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'show']);
         Route::post('users', [\App\Http\Controllers\Admin\UserController::class, 'store']);
         Route::put('users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update']);
 
