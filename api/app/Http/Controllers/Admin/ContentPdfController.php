@@ -62,6 +62,17 @@ class ContentPdfController extends Controller
         return response()->json($pdf);
     }
 
+    public function download(string $id)
+    {
+        $pdf = ContentPdf::findOrFail($id);
+        $fullPath = storage_path('app/' . $pdf->file_path);
+        abort_unless(file_exists($fullPath), 404);
+        return response()->file($fullPath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.basename($fullPath).'"',
+        ]);
+    }
+
     public function togglePage(string $pdfId, string $pageId)
     {
         $page = ContentPdfPage::where('content_pdf_id', $pdfId)->findOrFail($pageId);
@@ -78,4 +89,3 @@ class ContentPdfController extends Controller
         return response()->json($image);
     }
 }
-

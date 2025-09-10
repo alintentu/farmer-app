@@ -8,6 +8,24 @@ const routes: RouteRecordRaw[] = [
     redirect: '/dashboard'
   },
   {
+    path: '/admin/content/pdfs',
+    name: 'AdminContentPdfs',
+    component: () => import('@/views/admin/content/PdfList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/content/pdfs/new',
+    name: 'AdminContentPdfNew',
+    component: () => import('@/views/admin/content/PdfUpload.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/content/pdfs/:id',
+    name: 'AdminContentPdfShow',
+    component: () => import('@/views/admin/content/PdfDetail.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),

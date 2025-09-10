@@ -100,6 +100,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('content/pdfs', [\App\Http\Controllers\Admin\ContentPdfController::class, 'index']);
         Route::post('content/pdfs', [\App\Http\Controllers\Admin\ContentPdfController::class, 'store']);
         Route::get('content/pdfs/{id}', [\App\Http\Controllers\Admin\ContentPdfController::class, 'show']);
+        Route::get('content/pdfs/{id}/download', [\App\Http\Controllers\Admin\ContentPdfController::class, 'download']);
         Route::patch('content/pdfs/{id}/pages/{pageId}/toggle', [\App\Http\Controllers\Admin\ContentPdfController::class, 'togglePage']);
         Route::patch('content/pdfs/{id}/images/{imageId}/toggle', [\App\Http\Controllers\Admin\ContentPdfController::class, 'toggleImage']);
     });
