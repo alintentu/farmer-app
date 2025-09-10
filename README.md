@@ -290,30 +290,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Built with ❤️ by the Atlas team
  
-## Farmer App Trial Tasks (Backend Scaffold)
+## Farmer App — Implementation Summary
 
-This repo now includes a backend scaffold aligned with the Farmer App trial tasks:
+Task 1 — Admin User Management
+- Admin area (API + UI) for listing users with pagination and search by name/email/region.
+- Invitation flow with token generation and email (mockable via Mailhog).
+- Edit profile fields: name, city, phone, region, language, profile image.
+- Protected by Sanctum and role checks (`owner|admin`), consistent JSON responses.
 
-- Admin user management (invite, list with search, edit fields)
-- Content Library for PDFs (upload, parse text, extract images, embeddings, activation toggles)
+Task 2 — Content Library (PDF Handling)
+- Upload PDFs with metadata; files stored under `storage/app/content_library/pdf/`.
+- Parse per‑page text (Smalot PDF parser) into `content_pdf_pages`.
+- Extract page images (Imagick) into `storage/app/content_library/pdf/extracted_images/`.
+- Embeddings pipeline (mock/OpenAI) persists vectors in Postgres `vector` columns (PGVector) with statuses and token counts; page/image activation toggles included.
+- Admin UI for listing, filtering, uploading, and a detail view with inline PDF preview and toggles.
 
-What changed:
-- Switched DB to PostgreSQL + PGVector (Docker image `pgvector/pgvector:pg16`).
-- New migrations for `users` extra fields and content tables.
-- Embeddings driver added: mock (default) or OpenAI (set `OPENAI_API_KEY`).
-- Admin APIs under `/api/admin/*` behind `auth:sanctum` and `role:owner|admin`.
-
-Endpoints:
-- `GET /api/admin/users` – `q` (name/email/region), `per_page`.
-- `POST /api/admin/users` – invite: `name, email, role, region?, language?`.
-- `PUT /api/admin/users/{id}` – edit: `name?, city?, phone?, region?, language?, profile_image?`.
-- `GET /api/admin/content/pdfs` – list: `q, language, status`.
-- `POST /api/admin/content/pdfs` – multipart upload: `name, description?, language?, is_active?, pdf`.
-- `GET /api/admin/content/pdfs/{id}` – PDF with pages/images.
-- `PATCH /api/admin/content/pdfs/{id}/pages/{pageId}/toggle` – toggle active.
-- `PATCH /api/admin/content/pdfs/{id}/images/{imageId}/toggle` – toggle active.
-
-Notes:
-- Text extraction uses `smalot/pdfparser` if installed; otherwise a minimal fallback is used in dev.
-- Image extraction uses Imagick if available; already included in the API Dockerfile.
-- To enable OpenAI embeddings set in `api/.env`: `EMBEDDINGS_DRIVER=openai`, `OPENAI_API_KEY` and optionally `OPENAI_EMBEDDING_MODEL`.
+Infra & Dev Experience
+- Database switched to PostgreSQL + PGVector; extension enabled via migration.
+- Embeddings driver configurable: `EMBEDDINGS_DRIVER=mock|openai`, `OPENAI_API_KEY`, `OPENAI_EMBEDDING_MODEL`.
+- Dockerized PHP with `pdo_pgsql`, `pgsql`, `imagick`, `poppler-utils` for PDF/image processing.
+- CI with Pint (format), PHPStan (static analysis) and PHPUnit. Tests run on in‑memory SQLite; minimal sanity test included.
+- For local dev, use `QUEUE_CONNECTION=sync` or run a worker for background processing.
