@@ -298,12 +298,26 @@ Task 1 — Admin User Management
 - Edit profile fields: name, city, phone, region, language, profile image.
 - Protected by Sanctum and role checks (`owner|admin`), consistent JSON responses.
 
+Endpoints
+- `GET /api/admin/users` — list with `q`, `per_page`.
+- `GET /api/admin/users/{id}` — fetch single user.
+- `POST /api/admin/users` — invite: `name, email, role, region?, language?`.
+- `PUT /api/admin/users/{id}` — edit: `name?, city?, phone?, region?, language?, profile_image?`.
+
 Task 2 — Content Library (PDF Handling)
 - Upload PDFs with metadata; files stored under `storage/app/content_library/pdf/`.
 - Parse per‑page text (Smalot PDF parser) into `content_pdf_pages`.
 - Extract page images (Imagick) into `storage/app/content_library/pdf/extracted_images/`.
 - Embeddings pipeline (mock/OpenAI) persists vectors in Postgres `vector` columns (PGVector) with statuses and token counts; page/image activation toggles included.
 - Admin UI for listing, filtering, uploading, and a detail view with inline PDF preview and toggles.
+
+Endpoints
+- `GET /api/admin/content/pdfs` — list with `q`, `language`, `status`, `per_page`.
+- `POST /api/admin/content/pdfs` — multipart upload: `name, description?, language?, is_active?, pdf`.
+- `GET /api/admin/content/pdfs/{id}` — details (pages + images).
+- `GET /api/admin/content/pdfs/{id}/download` — stream/preview PDF.
+- `PATCH /api/admin/content/pdfs/{id}/pages/{pageId}/toggle` — toggle page active.
+- `PATCH /api/admin/content/pdfs/{id}/images/{imageId}/toggle` — toggle image active.
 
 Infra & Dev Experience
 - Database switched to PostgreSQL + PGVector; extension enabled via migration.
