@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
@@ -23,9 +26,8 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'city', 'phone', 'region', 'language', 'profile_image_path', 'invite_token', 'invited_at'
+                'city', 'phone', 'region', 'language', 'profile_image_path', 'invite_token', 'invited_at',
             ]);
         });
     }
 };
-

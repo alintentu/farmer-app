@@ -19,7 +19,7 @@ class OpenAIEmbeddingClient implements EmbeddingClient
         // Simple call; in dev this can be mocked
         $resp = $this->http->post('https://api.openai.com/v1/embeddings', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Authorization' => 'Bearer '.$this->apiKey,
                 'Content-Type' => 'application/json',
             ],
             'json' => [
@@ -30,7 +30,7 @@ class OpenAIEmbeddingClient implements EmbeddingClient
         ]);
 
         $data = json_decode((string) $resp->getBody(), true);
+
         return $data['data'][0]['embedding'] ?? [];
     }
 }
-

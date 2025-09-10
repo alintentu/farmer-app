@@ -7,15 +7,16 @@ namespace App\Http\Controllers\Admin;
 use App\Domain\User\Models\User;
 use App\Mail\AdminInviteMail;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {
     public function show(string $id)
     {
         $user = User::findOrFail($id);
+
         return response()->json($user);
     }
 

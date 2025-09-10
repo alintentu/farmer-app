@@ -34,14 +34,14 @@ class AtlasSeeder extends Seeder
                     'tasks' => true,
                     'invoicing' => true,
                     'users_limit' => 3,
-                    'storage_limit' => '1GB'
+                    'storage_limit' => '1GB',
                 ],
                 'limits' => [
                     'users' => 3,
                     'projects' => 5,
-                    'storage' => 1073741824 // 1GB in bytes
+                    'storage' => 1073741824, // 1GB in bytes
                 ],
-                'sort_order' => 1
+                'sort_order' => 1,
             ],
             [
                 'key' => 'solo',
@@ -54,14 +54,14 @@ class AtlasSeeder extends Seeder
                     'invoicing' => true,
                     'docs' => true,
                     'users_limit' => 1,
-                    'storage_limit' => '5GB'
+                    'storage_limit' => '5GB',
                 ],
                 'limits' => [
                     'users' => 1,
                     'projects' => 10,
-                    'storage' => 5368709120 // 5GB in bytes
+                    'storage' => 5368709120, // 5GB in bytes
                 ],
-                'sort_order' => 2
+                'sort_order' => 2,
             ],
             [
                 'key' => 'team',
@@ -75,14 +75,14 @@ class AtlasSeeder extends Seeder
                     'docs' => true,
                     'crm' => true,
                     'users_limit' => 10,
-                    'storage_limit' => '10GB'
+                    'storage_limit' => '10GB',
                 ],
                 'limits' => [
                     'users' => 10,
                     'projects' => 25,
-                    'storage' => 10737418240 // 10GB in bytes
+                    'storage' => 10737418240, // 10GB in bytes
                 ],
-                'sort_order' => 3
+                'sort_order' => 3,
             ],
             [
                 'key' => 'growth',
@@ -98,14 +98,14 @@ class AtlasSeeder extends Seeder
                     'marketing' => true,
                     'automation' => true,
                     'users_limit' => 25,
-                    'storage_limit' => '25GB'
+                    'storage_limit' => '25GB',
                 ],
                 'limits' => [
                     'users' => 25,
                     'projects' => 100,
-                    'storage' => 26843545600 // 25GB in bytes
+                    'storage' => 26843545600, // 25GB in bytes
                 ],
-                'sort_order' => 4
+                'sort_order' => 4,
             ],
             [
                 'key' => 'scale',
@@ -122,14 +122,14 @@ class AtlasSeeder extends Seeder
                     'automation' => true,
                     'analytics' => true,
                     'users_limit' => 100,
-                    'storage_limit' => '100GB'
+                    'storage_limit' => '100GB',
                 ],
                 'limits' => [
                     'users' => 100,
                     'projects' => 500,
-                    'storage' => 107374182400 // 100GB in bytes
+                    'storage' => 107374182400, // 100GB in bytes
                 ],
-                'sort_order' => 5
+                'sort_order' => 5,
             ],
             [
                 'key' => 'enterprise',
@@ -147,15 +147,15 @@ class AtlasSeeder extends Seeder
                     'analytics' => true,
                     'helpdesk' => true,
                     'users_limit' => 'unlimited',
-                    'storage_limit' => 'unlimited'
+                    'storage_limit' => 'unlimited',
                 ],
                 'limits' => [
                     'users' => -1, // unlimited
                     'projects' => -1, // unlimited
-                    'storage' => -1 // unlimited
+                    'storage' => -1, // unlimited
                 ],
-                'sort_order' => 6
-            ]
+                'sort_order' => 6,
+            ],
         ];
 
         foreach ($plans as $plan) {
@@ -178,14 +178,14 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_time_tracking' => true,
                         'enable_kanban' => true,
-                        'enable_gantt' => false
+                        'enable_gantt' => false,
                     ],
                     'limits' => [
                         'projects' => 5,
-                        'tasks_per_project' => 100
-                    ]
+                        'tasks_per_project' => 100,
+                    ],
                 ],
-                'sort_order' => 1
+                'sort_order' => 1,
             ],
             [
                 'key' => 'crm',
@@ -196,15 +196,15 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_leads' => true,
                         'enable_deals' => true,
-                        'enable_contacts' => true
+                        'enable_contacts' => true,
                     ],
                     'limits' => [
                         'contacts' => 100,
                         'leads' => 50,
-                        'deals' => 25
-                    ]
+                        'deals' => 25,
+                    ],
                 ],
-                'sort_order' => 2
+                'sort_order' => 2,
             ],
             [
                 'key' => 'invoicing',
@@ -215,14 +215,14 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_recurring_invoices' => true,
                         'enable_expense_tracking' => true,
-                        'enable_tax_calculation' => false
+                        'enable_tax_calculation' => false,
                     ],
                     'limits' => [
                         'invoices_per_month' => 10,
-                        'expenses_per_month' => 50
-                    ]
+                        'expenses_per_month' => 50,
+                    ],
                 ],
-                'sort_order' => 3
+                'sort_order' => 3,
             ],
             [
                 'key' => 'marketing',
@@ -233,14 +233,14 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_email_campaigns' => true,
                         'enable_landing_pages' => true,
-                        'enable_analytics' => true
+                        'enable_analytics' => true,
                     ],
                     'limits' => [
                         'email_contacts' => 1000,
-                        'campaigns_per_month' => 5
-                    ]
+                        'campaigns_per_month' => 5,
+                    ],
                 ],
-                'sort_order' => 4
+                'sort_order' => 4,
             ],
             [
                 'key' => 'automation',
@@ -251,14 +251,14 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_webhooks' => true,
                         'enable_zapier' => true,
-                        'enable_api_access' => true
+                        'enable_api_access' => true,
                     ],
                     'limits' => [
                         'automations' => 10,
-                        'api_calls_per_month' => 10000
-                    ]
+                        'api_calls_per_month' => 10000,
+                    ],
                 ],
-                'sort_order' => 5
+                'sort_order' => 5,
             ],
             [
                 'key' => 'analytics',
@@ -269,14 +269,14 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_custom_reports' => true,
                         'enable_data_export' => true,
-                        'enable_real_time_analytics' => true
+                        'enable_real_time_analytics' => true,
                     ],
                     'limits' => [
                         'reports' => 20,
-                        'data_retention_days' => 365
-                    ]
+                        'data_retention_days' => 365,
+                    ],
                 ],
-                'sort_order' => 6
+                'sort_order' => 6,
             ],
             [
                 'key' => 'docs',
@@ -287,14 +287,14 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_versioning' => true,
                         'enable_collaboration' => true,
-                        'enable_search' => true
+                        'enable_search' => true,
                     ],
                     'limits' => [
                         'documents' => 100,
-                        'storage_mb' => 1000
-                    ]
+                        'storage_mb' => 1000,
+                    ],
                 ],
-                'sort_order' => 7
+                'sort_order' => 7,
             ],
             [
                 'key' => 'helpdesk',
@@ -305,15 +305,15 @@ class AtlasSeeder extends Seeder
                     'settings' => [
                         'enable_ticket_automation' => true,
                         'enable_knowledge_base' => true,
-                        'enable_satisfaction_surveys' => true
+                        'enable_satisfaction_surveys' => true,
                     ],
                     'limits' => [
                         'tickets_per_month' => 500,
-                        'agents' => 10
-                    ]
+                        'agents' => 10,
+                    ],
                 ],
-                'sort_order' => 8
-            ]
+                'sort_order' => 8,
+            ],
         ];
 
         foreach ($modules as $module) {
@@ -352,12 +352,12 @@ class AtlasSeeder extends Seeder
 
         // Enable modules for demo tenant
         $modules = Module::whereIn('key', ['tasks', 'crm', 'invoicing', 'docs'])->get();
-        
+
         foreach ($modules as $module) {
             $tenant->modules()->attach($module->id, [
                 'enabled' => true,
                 'limits' => $module->defaults['limits'] ?? [],
-                'settings' => $module->defaults['settings'] ?? []
+                'settings' => $module->defaults['settings'] ?? [],
             ]);
         }
 

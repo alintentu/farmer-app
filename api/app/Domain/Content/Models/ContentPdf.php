@@ -35,4 +35,3 @@ class ContentPdf extends Model
         return $this->hasMany(ContentPdfImage::class);
     }
 }
-

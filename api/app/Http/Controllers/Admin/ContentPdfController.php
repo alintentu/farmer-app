@@ -51,22 +51,24 @@ class ContentPdfController extends Controller
             'file_path' => $path,
         ]);
 
-        ProcessPdfUpload::dispatch($pdf->id);
+        ProcessPdfUpload::dispatch((string) $pdf->id);
 
         return response()->json($pdf, 201);
     }
 
     public function show(string $id)
     {
-        $pdf = ContentPdf::with(['pages' => fn($q) => $q->orderBy('page_number'), 'images'])->findOrFail($id);
+        $pdf = ContentPdf::with(['pages' => fn ($q) => $q->orderBy('page_number'), 'images'])->findOrFail($id);
+
         return response()->json($pdf);
     }
 
     public function download(string $id)
     {
         $pdf = ContentPdf::findOrFail($id);
-        $fullPath = storage_path('app/' . $pdf->file_path);
+        $fullPath = storage_path('app/'.$pdf->file_path);
         abort_unless(file_exists($fullPath), 404);
+
         return response()->file($fullPath, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="'.basename($fullPath).'"',
@@ -78,6 +80,7 @@ class ContentPdfController extends Controller
         $page = ContentPdfPage::where('content_pdf_id', $pdfId)->findOrFail($pageId);
         $page->is_active = ! $page->is_active;
         $page->save();
+
         return response()->json($page);
     }
 
@@ -86,6 +89,7 @@ class ContentPdfController extends Controller
         $image = ContentPdfImage::where('content_pdf_id', $pdfId)->findOrFail($imageId);
         $image->is_active = ! $image->is_active;
         $image->save();
+
         return response()->json($image);
     }
 }

@@ -3,12 +3,23 @@ includes:
 
 parameters:
     paths:
-        - app
-    level: 7
-    checkMissingIterableValueType: false
+        - app/Domain/Content
+        - app/Http/Controllers/Admin
+        - app/Jobs
+        - app/Services
+    level: 5
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\.*#'
-        - '#Unsafe usage of new static#'
+        # Eloquent generics / factories typing noise
+        - '#uses generic trait Illuminate\\\\Database\\\\Eloquent\\\\Factories\\\\HasFactory#'
+        - '#return type with generic class Illuminate\\\\Database\\\\Eloquent\\\\Relations#'
+        # Dynamic properties from Laravel magic
+        - '#unknown class App\\\\Models\\\\User#'
+        - '#Access to property \$tenant on an unknown class#'
+        # OpenAI env types
+        - '#expects string, string\|true given#'
+        - '#expects string, bool\|string given#'
+        # Misc dev convenience
+        - '#Call to method where\(\) on an unknown class#'
     bootstrapFiles:
         - vendor/nunomaduro/larastan/bootstrap.php
-

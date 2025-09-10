@@ -12,4 +12,3 @@ interface EmbeddingClient
      */
     public function embed(string $text): array;
 }
-

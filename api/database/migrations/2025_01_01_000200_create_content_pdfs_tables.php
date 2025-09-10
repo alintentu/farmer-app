@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('content_pdfs', function (Blueprint $table) {
@@ -35,7 +38,7 @@ return new class extends Migration {
         });
 
         // Add vector type column separately (Blueprint lacks native helper)
-        DB::statement("ALTER TABLE content_pdf_pages ADD COLUMN embedding vector(1536)");
+        DB::statement('ALTER TABLE content_pdf_pages ADD COLUMN embedding vector(1536)');
 
         Schema::create('content_pdf_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -50,7 +53,7 @@ return new class extends Migration {
             $table->foreign('content_pdf_id')->references('id')->on('content_pdfs')->cascadeOnDelete();
         });
 
-        DB::statement("ALTER TABLE content_pdf_images ADD COLUMN embedding vector(1536)");
+        DB::statement('ALTER TABLE content_pdf_images ADD COLUMN embedding vector(1536)');
 
         Schema::create('content_vectors', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -63,7 +66,7 @@ return new class extends Migration {
 
             $table->foreign('content_pdf_id')->references('id')->on('content_pdfs')->cascadeOnDelete();
         });
-        DB::statement("ALTER TABLE content_vectors ADD COLUMN embedding vector(1536)");
+        DB::statement('ALTER TABLE content_vectors ADD COLUMN embedding vector(1536)');
     }
 
     public function down(): void

@@ -29,4 +29,3 @@ class ContentPdfPage extends Model
         return $this->belongsTo(ContentPdf::class, 'content_pdf_id');
     }
 }
-

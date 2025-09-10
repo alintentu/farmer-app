@@ -69,35 +69,35 @@ class SubscriptionGate
     public function handle(Request $request, Closure $next, string $service): SymfonyResponse
     {
         $user = $request->user();
-        
-        if (!$user) {
+
+        if (! $user) {
             return response()->json(['message' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
         }
 
         $tenant = $user->tenant;
-        
-        if (!$tenant) {
+
+        if (! $tenant) {
             return response()->json(['message' => 'No tenant associated'], Response::HTTP_FORBIDDEN);
         }
 
         // Check if service is accessible for the current plan
-        if (!$this->canAccessService($service, $tenant->plan)) {
+        if (! $this->canAccessService($service, $tenant->plan)) {
             return response()->json([
                 'message' => "Service '{$service}' not available on your plan",
                 'service' => $service,
                 'plan' => $tenant->plan,
                 'upgrade_required' => true,
-                'available_plans' => self::SERVICE_ACCESS[$service] ?? []
+                'available_plans' => self::SERVICE_ACCESS[$service] ?? [],
             ], Response::HTTP_FORBIDDEN);
         }
 
         // Check subscription status
-        if (!$tenant->hasActiveSubscription() && !$tenant->isOnTrial()) {
+        if (! $tenant->hasActiveSubscription() && ! $tenant->isOnTrial()) {
             return response()->json([
                 'message' => 'Subscription expired or inactive',
                 'service' => $service,
                 'plan' => $tenant->plan,
-                'subscription_required' => true
+                'subscription_required' => true,
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -114,7 +114,8 @@ class SubscriptionGate
     private function canAccessService(string $service, string $plan): bool
     {
         $allowedPlans = self::SERVICE_ACCESS[$service] ?? [];
-        return in_array($plan, $allowedPlans);
+
+        return in_array($plan, $allowedPlans, true);
     }
 
     /**
@@ -157,12 +158,12 @@ class SubscriptionGate
     public static function getUpgradeSuggestions(string $service): array
     {
         $allowedPlans = self::SERVICE_ACCESS[$service] ?? [];
-        
+
         return [
             'service' => $service,
             'available_plans' => $allowedPlans,
             'recommended_plan' => $allowedPlans[0] ?? null,
-            'features' => self::getServiceFeatures($service)
+            'features' => self::getServiceFeatures($service),
         ];
     }
 
@@ -177,36 +178,36 @@ class SubscriptionGate
                 'Task tracking',
                 'Kanban boards',
                 'Time tracking',
-                'Team collaboration'
+                'Team collaboration',
             ],
             'crm' => [
                 'Contact management',
                 'Lead management',
                 'Deal pipeline',
                 'Sales analytics',
-                'Email integration'
+                'Email integration',
             ],
             'invoicing' => [
                 'Invoice generation',
                 'Expense tracking',
                 'Payment processing',
                 'Financial reporting',
-                'Tax calculations'
+                'Tax calculations',
             ],
             'marketing' => [
                 'Email campaigns',
                 'Landing pages',
                 'Marketing analytics',
                 'Lead scoring',
-                'A/B testing'
+                'A/B testing',
             ],
             'analytics' => [
                 'Real-time analytics',
                 'Custom reports',
                 'Data visualization',
                 'Business intelligence',
-                'Data export'
-            ]
+                'Data export',
+            ],
         ];
 
         return $features[$service] ?? [];

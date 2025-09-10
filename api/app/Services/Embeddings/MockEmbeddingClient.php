@@ -16,7 +16,7 @@ class MockEmbeddingClient implements EmbeddingClient
             $pair = substr($hash, ($i * 2) % 32, 2);
             $vector[] = (hexdec($pair) % 100) / 100.0;
         }
+
         return $vector;
     }
 }
-

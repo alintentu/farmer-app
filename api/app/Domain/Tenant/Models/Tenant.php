@@ -68,8 +68,8 @@ class Tenant extends Model
 
         // Check if module is enabled for this tenant
         $module = $this->modules()->where('key', $feature)->first();
-        
-        if (!$module) {
+
+        if (! $module) {
             return false;
         }
 
@@ -79,8 +79,8 @@ class Tenant extends Model
     public function getFeatureLimit(string $feature): ?int
     {
         $module = $this->modules()->where('key', $feature)->first();
-        
-        if (!$module) {
+
+        if (! $module) {
             return null;
         }
 
@@ -94,20 +94,20 @@ class Tenant extends Model
 
     public function hasActiveSubscription(): bool
     {
-        return !$this->subscription_ends_at || $this->subscription_ends_at->isFuture();
+        return ! $this->subscription_ends_at || $this->subscription_ends_at->isFuture();
     }
 
     public function canAccessFeature(string $feature): bool
     {
-        return $this->is_active && 
-               $this->hasFeature($feature) && 
+        return $this->is_active &&
+               $this->hasFeature($feature) &&
                ($this->isOnTrial() || $this->hasActiveSubscription());
     }
 
     public function getPlanFeatures(): array
     {
         $planFeatures = config("plans.{$this->plan}.features", []);
-        
+
         // Merge with tenant-specific overrides
         if ($this->feature_overrides) {
             $planFeatures = array_merge($planFeatures, $this->feature_overrides);

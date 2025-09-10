@@ -46,18 +46,19 @@ class ProcessPdfUpload implements ShouldQueue
     {
         $driver = config('services.embeddings.driver', env('EMBEDDINGS_DRIVER', 'mock'));
         if ($driver === 'openai' && ($apiKey = env('OPENAI_API_KEY'))) {
-            return new OpenAIEmbeddingClient(new HttpClient(), $apiKey, env('OPENAI_EMBEDDING_MODEL', 'text-embedding-3-small'));
+            return new OpenAIEmbeddingClient(new HttpClient, $apiKey, env('OPENAI_EMBEDDING_MODEL', 'text-embedding-3-small'));
         }
-        return new MockEmbeddingClient();
+
+        return new MockEmbeddingClient;
     }
 
     private function extractText(ContentPdf $pdf, EmbeddingClient $embeddings): void
     {
         // Parse PDF text per page (placeholder; requires smalot/pdfparser or spatie/pdf-to-text)
-        $parser = class_exists(PdfParser::class) ? new PdfParser() : null;
+        $parser = class_exists(PdfParser::class) ? new PdfParser : null;
         $pages = [];
         if ($parser) {
-            $document = $parser->parseFile(storage_path('app/' . $pdf->file_path));
+            $document = $parser->parseFile(storage_path('app/'.$pdf->file_path));
             foreach ($document->getPages() as $i => $page) {
                 $pages[] = [
                     'page_number' => $i + 1,
@@ -73,7 +74,7 @@ class ProcessPdfUpload implements ShouldQueue
             $page = ContentPdfPage::create([
                 'content_pdf_id' => $pdf->id,
                 'page_number' => $p['page_number'],
-                'text' => $p['text'] ?? '',
+                'text' => (string) $p['text'],
                 'is_active' => true,
                 'embedding_status' => 'processing',
             ]);
@@ -90,17 +91,17 @@ class ProcessPdfUpload implements ShouldQueue
     {
         // Use Imagick to rasterize pages to images (if available)
         if (class_exists(\Imagick::class)) {
-            $source = storage_path('app/' . $pdf->file_path);
+            $source = storage_path('app/'.$pdf->file_path);
             try {
-                $imagick = new \Imagick();
+                $imagick = new \Imagick;
                 $imagick->setResolution(150, 150);
                 $imagick->readImage($source);
                 $imagick->setImageFormat('png');
 
                 foreach ($imagick as $i => $frame) {
                     $pageNum = $i + 1;
-                    $path = 'content_library/pdf/extracted_images/page_' . $pdf->id . '_' . $pageNum . '.png';
-                    $fullPath = storage_path('app/' . $path);
+                    $path = 'content_library/pdf/extracted_images/page_'.$pdf->id.'_'.$pageNum.'.png';
+                    $fullPath = storage_path('app/'.$path);
                     @mkdir(dirname($fullPath), 0775, true);
                     $frame->writeImage($fullPath);
 
@@ -112,13 +113,13 @@ class ProcessPdfUpload implements ShouldQueue
                         'embedding_status' => 'processing',
                     ]);
 
-                    $vec = $embeddings->embed('image page ' . $pageNum . ' of ' . $pdf->name);
+                    $vec = $embeddings->embed('image page '.$pageNum.' of '.$pdf->name);
                     $placeholders = implode(',', $vec);
                     \DB::statement("UPDATE content_pdf_images SET embedding = '[".$placeholders."]'::vector, embedding_status = 'complete' WHERE id = ?", [$image->id]);
                 }
             } catch (\Throwable $e) {
                 // Non-fatal in dev
-                \Log::warning('Imagick not available or failed: ' . $e->getMessage());
+                \Log::warning('Imagick not available or failed: '.$e->getMessage());
             }
         }
     }

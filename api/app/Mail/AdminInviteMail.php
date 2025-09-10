@@ -17,11 +17,10 @@ class AdminInviteMail extends Mailable
 
     public function build(): self
     {
-        $inviteUrl = config('app.url') . '/accept-invite?token=' . $this->user->invite_token . '&email=' . urlencode($this->user->email);
+        $inviteUrl = config('app.url').'/accept-invite?token='.$this->user->invite_token.'&email='.urlencode($this->user->email);
 
         return $this->subject('You are invited to Farmer App')
             ->view('emails.admin_invite')
             ->with(['user' => $this->user, 'inviteUrl' => $inviteUrl]);
     }
 }
-

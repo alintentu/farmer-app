@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ServiceDiscovery
@@ -38,7 +38,7 @@ class ServiceDiscovery
     public static function isServiceHealthy(string $service): bool
     {
         $cacheKey = "service_health_{$service}";
-        
+
         return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($service) {
             try {
                 $endpoint = self::getServiceEndpoint($service);
@@ -47,9 +47,11 @@ class ServiceDiscovery
                 }
 
                 $response = Http::timeout(5)->get("{$endpoint}/health");
+
                 return $response->successful();
             } catch (\Exception $e) {
-                Log::warning("Service health check failed for {$service}: " . $e->getMessage());
+                Log::warning("Service health check failed for {$service}: ".$e->getMessage());
+
                 return false;
             }
         });
@@ -61,13 +63,13 @@ class ServiceDiscovery
     public static function getHealthyServices(): array
     {
         $healthyServices = [];
-        
+
         foreach (array_keys(self::SERVICE_ENDPOINTS) as $service) {
             if (self::isServiceHealthy($service)) {
                 $healthyServices[] = $service;
             }
         }
-        
+
         return $healthyServices;
     }
 
@@ -77,18 +79,18 @@ class ServiceDiscovery
     public static function serviceRequest(string $service, string $method, string $endpoint, array $data = [], array $headers = []): array
     {
         $baseUrl = self::getServiceEndpoint($service);
-        
+
         if (empty($baseUrl)) {
             throw new \Exception("Service '{$service}' not found");
         }
 
-        if (!self::isServiceHealthy($service)) {
+        if (! self::isServiceHealthy($service)) {
             throw new \Exception("Service '{$service}' is not healthy");
         }
 
         try {
-            $url = rtrim($baseUrl, '/') . '/' . ltrim($endpoint, '/');
-            
+            $url = rtrim($baseUrl, '/').'/'.ltrim($endpoint, '/');
+
             $response = Http::withHeaders($headers)
                 ->timeout(30)
                 ->$method($url, $data);
@@ -97,22 +99,22 @@ class ServiceDiscovery
                 return [
                     'success' => true,
                     'data' => $response->json(),
-                    'status' => $response->status()
+                    'status' => $response->status(),
                 ];
             }
 
             return [
                 'success' => false,
                 'error' => $response->body(),
-                'status' => $response->status()
+                'status' => $response->status(),
             ];
         } catch (\Exception $e) {
-            Log::error("Service request failed for {$service}: " . $e->getMessage());
-            
+            Log::error("Service request failed for {$service}: ".$e->getMessage());
+
             return [
                 'success' => false,
                 'error' => $e->getMessage(),
-                'status' => 500
+                'status' => 500,
             ];
         }
     }
@@ -139,17 +141,17 @@ class ServiceDiscovery
     public static function broadcastEvent(string $event, array $payload): array
     {
         $results = [];
-        
+
         foreach (array_keys(self::SERVICE_ENDPOINTS) as $service) {
             if (self::isServiceHealthy($service)) {
                 $results[$service] = self::serviceRequest($service, 'post', '/events', [
                     'event' => $event,
                     'payload' => $payload,
-                    'timestamp' => now()->toISOString()
+                    'timestamp' => now()->toISOString(),
                 ]);
             }
         }
-        
+
         return $results;
     }
 
@@ -167,7 +169,7 @@ class ServiceDiscovery
             'analytics' => ['core', 'tasks', 'crm', 'invoicing', 'marketing'],
             'communication' => ['core'],
             'files' => ['core'],
-            'search' => ['core', 'tasks', 'crm', 'invoicing', 'marketing']
+            'search' => ['core', 'tasks', 'crm', 'invoicing', 'marketing'],
         ];
 
         return $dependencies[$service] ?? [];
@@ -179,13 +181,13 @@ class ServiceDiscovery
     public static function areDependenciesHealthy(string $service): bool
     {
         $dependencies = self::getServiceDependencies($service);
-        
+
         foreach ($dependencies as $dependency) {
-            if (!self::isServiceHealthy($dependency)) {
+            if (! self::isServiceHealthy($dependency)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -195,16 +197,16 @@ class ServiceDiscovery
     public static function getServiceStatusSummary(): array
     {
         $summary = [];
-        
+
         foreach (array_keys(self::SERVICE_ENDPOINTS) as $service) {
             $summary[$service] = [
                 'healthy' => self::isServiceHealthy($service),
                 'endpoint' => self::getServiceEndpoint($service),
                 'dependencies' => self::getServiceDependencies($service),
-                'dependencies_healthy' => self::areDependenciesHealthy($service)
+                'dependencies_healthy' => self::areDependenciesHealthy($service),
             ];
         }
-        
+
         return $summary;
     }
 }

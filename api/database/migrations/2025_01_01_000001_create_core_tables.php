@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('subscription_ends_at')->nullable();
             $table->timestamps();
-            
+
             $table->index(['domain']);
             $table->index(['plan']);
             $table->index(['is_active']);
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
-            
+
             $table->index(['key']);
             $table->index(['is_active']);
             $table->index(['sort_order']);
@@ -58,7 +58,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
-            
+
             $table->index(['key']);
             $table->index(['is_active']);
             $table->index(['sort_order']);
@@ -72,7 +72,7 @@ return new class extends Migration
             $table->json('limits')->nullable();
             $table->json('settings')->nullable();
             $table->timestamps();
-            
+
             $table->primary(['tenant_id', 'module_id']);
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
@@ -91,7 +91,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            
+
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
             $table->index(['email']);
             $table->index(['tenant_id']);

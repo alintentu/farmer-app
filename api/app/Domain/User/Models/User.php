@@ -19,13 +19,13 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use BelongsToTenant;
     use HasApiTokens;
     use HasFactory;
-    use HasUuids;
     use HasRoles;
+    use HasUuids;
     use LogsActivity;
     use Notifiable;
-    use BelongsToTenant;
 
     protected $fillable = [
         'name',
