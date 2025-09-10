@@ -32,7 +32,7 @@ install:
 	@echo "Installing Laravel dependencies..."
 	docker compose run --rm php composer install
 	@echo "Installing Vue dependencies..."
-	docker compose run --rm node npm ci
+	docker compose run --rm node npm install
 	@echo "Installation complete!"
 
 # Initialize project (first time setup)
@@ -62,7 +62,7 @@ setup: install
 	@echo ""
 	@echo "Access your applications:"
 	@echo "  Frontend: http://localhost:5173"
-	@echo "  API: http://localhost:8080"
+	@echo "  API: http://localhost:8081"
 	@echo "  Meilisearch: http://localhost:7700"
 	@echo "  MailHog: http://localhost:8025"
 
@@ -111,7 +111,7 @@ dev:
 	docker compose up -d
 	@echo "Development environment started!"
 	@echo "Frontend: http://localhost:5173"
-	@echo "API: http://localhost:8080"
+	@echo "API: http://localhost:8081"
 
 restart:
 	docker compose restart

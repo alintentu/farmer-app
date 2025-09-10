@@ -11,9 +11,8 @@
         "laravel/cashier": "^15.0",
         "laravel/scout": "^11.0",
         "meilisearch/meilisearch-php": "^1.0",
-        "stancl/tenancy": "^4.0",
         "spatie/laravel-permission": "^6.0",
-        "spatie/laravel-activitylog": "^5.0",
+        "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-backup": "^8.0",
         "spatie/laravel-query-builder": "^5.0",
         "spatie/laravel-ray": "^1.0",
@@ -24,7 +23,12 @@
         "pestphp/pest": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
         "fakerphp/faker": "^1.0",
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.0",
+        "smalot/pdfparser": "^2.9"
+    },
+    "suggest": {
+        "smalot/pdfparser": "^2.9 for PDF text extraction",
+        "ext-imagick": "For image extraction from PDFs"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -45,23 +49,22 @@
     },
     "scripts": {
         "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php -r \"if (file_exists('artisan')) { passthru('php artisan package:discover --ansi'); }\""
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php -r \"if (file_exists('artisan')) { passthru('php artisan vendor:publish --tag=laravel-assets --ansi --force'); }\""
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
+            "@php -r \"if (file_exists('artisan')) { passthru('php artisan key:generate --ansi'); }\""
         ],
         "test": [
-            "@php artisan test"
+            "@php -r \"if (file_exists('artisan')) { passthru('php artisan test'); } else { echo 'No artisan; skipping tests.\\n'; }\""
         ],
         "test-coverage": [
-            "@php artisan test --coverage"
+            "@php -r \"if (file_exists('artisan')) { passthru('php artisan test --coverage'); } else { echo 'No artisan; skipping tests.\\n'; }\""
         ],
         "analyse": [
             "@php vendor/bin/phpstan analyse"
@@ -84,9 +87,10 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

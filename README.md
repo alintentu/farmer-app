@@ -101,7 +101,7 @@ A comprehensive, multi-tenant SaaS platform built with Laravel 11 and Vue 3, fea
 
 3. **Access the applications**
    - **Frontend**: http://localhost:5173
-   - **API**: http://localhost:8080
+   - **API**: http://localhost:8081
    - **Meilisearch**: http://localhost:7700
    - **MailHog**: http://localhost:8025
 
@@ -289,3 +289,31 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Built with ❤️ by the Atlas team
+ 
+## Farmer App Trial Tasks (Backend Scaffold)
+
+This repo now includes a backend scaffold aligned with the Farmer App trial tasks:
+
+- Admin user management (invite, list with search, edit fields)
+- Content Library for PDFs (upload, parse text, extract images, embeddings, activation toggles)
+
+What changed:
+- Switched DB to PostgreSQL + PGVector (Docker image `pgvector/pgvector:pg16`).
+- New migrations for `users` extra fields and content tables.
+- Embeddings driver added: mock (default) or OpenAI (set `OPENAI_API_KEY`).
+- Admin APIs under `/api/admin/*` behind `auth:sanctum` and `role:owner|admin`.
+
+Endpoints:
+- `GET /api/admin/users` – `q` (name/email/region), `per_page`.
+- `POST /api/admin/users` – invite: `name, email, role, region?, language?`.
+- `PUT /api/admin/users/{id}` – edit: `name?, city?, phone?, region?, language?, profile_image?`.
+- `GET /api/admin/content/pdfs` – list: `q, language, status`.
+- `POST /api/admin/content/pdfs` – multipart upload: `name, description?, language?, is_active?, pdf`.
+- `GET /api/admin/content/pdfs/{id}` – PDF with pages/images.
+- `PATCH /api/admin/content/pdfs/{id}/pages/{pageId}/toggle` – toggle active.
+- `PATCH /api/admin/content/pdfs/{id}/images/{imageId}/toggle` – toggle active.
+
+Notes:
+- Text extraction uses `smalot/pdfparser` if installed; otherwise a minimal fallback is used in dev.
+- Image extraction uses Imagick if available; already included in the API Dockerfile.
+- To enable OpenAI embeddings set in `api/.env`: `EMBEDDINGS_DRIVER=openai`, `OPENAI_API_KEY` and optionally `OPENAI_EMBEDDING_MODEL`.

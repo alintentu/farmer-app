@@ -88,4 +88,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['feature:helpdesk'])->prefix('helpdesk')->name('helpdesk.')->group(function () {
         // Helpdesk routes will be added here
     });
+    
+    // Admin - User Management & Content Library
+    Route::middleware(['role:owner|admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Users
+        Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index']);
+        Route::post('users', [\App\Http\Controllers\Admin\UserController::class, 'store']);
+        Route::put('users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update']);
+
+        // Content PDFs
+        Route::get('content/pdfs', [\App\Http\Controllers\Admin\ContentPdfController::class, 'index']);
+        Route::post('content/pdfs', [\App\Http\Controllers\Admin\ContentPdfController::class, 'store']);
+        Route::get('content/pdfs/{id}', [\App\Http\Controllers\Admin\ContentPdfController::class, 'show']);
+        Route::patch('content/pdfs/{id}/pages/{pageId}/toggle', [\App\Http\Controllers\Admin\ContentPdfController::class, 'togglePage']);
+        Route::patch('content/pdfs/{id}/images/{imageId}/toggle', [\App\Http\Controllers\Admin\ContentPdfController::class, 'toggleImage']);
+    });
 });

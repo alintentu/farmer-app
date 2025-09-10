@@ -83,7 +83,7 @@ init_vue() {
     
     # Install dependencies
     print_status "Installing Vue dependencies..."
-    docker compose run --rm node npm ci
+    docker compose run --rm node npm install
     print_success "Vue dependencies installed"
     
     # Install additional packages
@@ -167,7 +167,7 @@ main() {
     echo ""
     echo "Access your applications:"
     echo "  Frontend: http://localhost:5173"
-    echo "  API: http://localhost:8080"
+    echo "  API: http://localhost:8081"
     echo "  Meilisearch: http://localhost:7700"
     echo "  MailHog: http://localhost:8025"
     echo ""

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/laravel/pint/main/pint.schema.json",
+  "preset": "laravel",
+  "rules": {
+    "strict_param": true,
+    "declare_strict_types": true,
+    "no_unused_imports": true
+  }
+}

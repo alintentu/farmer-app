@@ -1,0 +1,14 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+    level: 7
+    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\.*#'
+        - '#Unsafe usage of new static#'
+    bootstrapFiles:
+        - vendor/nunomaduro/larastan/bootstrap.php
+
