@@ -38,6 +38,35 @@
             </router-link>
           </MenuItem>
           
+          <!-- Admin links -->
+          <template v-if="isAdmin">
+            <div class="border-t border-gray-100" />
+            <MenuItem v-slot="{ active }">
+              <router-link
+                to="/admin/users"
+                :class="[
+                  active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                  'block px-4 py-2 text-sm'
+                ]"
+              >
+                <UsersIcon class="mr-3 h-4 w-4" />
+                Admin · Users
+              </router-link>
+            </MenuItem>
+            <MenuItem v-slot="{ active }">
+              <router-link
+                to="/admin/content/pdfs"
+                :class="[
+                  active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                  'block px-4 py-2 text-sm'
+                ]"
+              >
+                <DocumentTextIcon class="mr-3 h-4 w-4" />
+                Admin · Content
+              </router-link>
+            </MenuItem>
+          </template>
+          
           <MenuItem v-slot="{ active }">
             <router-link
               to="/settings"
@@ -92,6 +121,8 @@ import {
   UserIcon,
   CogIcon,
   CubeIcon,
+  UsersIcon,
+  DocumentTextIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
@@ -100,6 +131,7 @@ import type { User } from '@/types'
 const authStore = useAuthStore()
 
 const user = computed(() => authStore.user)
+const isAdmin = authStore.isAdmin
 
 const handleLogout = async () => {
   await authStore.logout()
