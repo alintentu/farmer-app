@@ -21,7 +21,7 @@ A comprehensive, multi-tenant SaaS platform built with Laravel 11 and Vue 3, fea
 - **Multi-tenancy** - Tenant isolation with feature gates
 - **API Resources** - RESTful API with proper HTTP status codes
 - **Authentication** - Laravel Sanctum with role-based access
-- **Database** - MySQL 8.0 with proper indexing and relationships
+- **Database** - PostgreSQL 16 + PGVector for embeddings storage
 - **Caching** - Redis for session and cache management
 - **Search** - Meilisearch for fast, typo-tolerant search
 - **Testing** - Pest PHP with comprehensive test coverage
@@ -53,7 +53,7 @@ A comprehensive, multi-tenant SaaS platform built with Laravel 11 and Vue 3, fea
 ### Backend
 - **PHP 8.3** - Latest PHP with strict typing
 - **Laravel 11** - Modern PHP framework
-- **MySQL 8.0** - Reliable database
+- **PostgreSQL 16 + PGVector** - Primary DB and vector similarity support
 - **Redis 7** - Caching and sessions
 - **Meilisearch** - Fast search engine
 - **Docker** - Containerized development
@@ -102,6 +102,7 @@ A comprehensive, multi-tenant SaaS platform built with Laravel 11 and Vue 3, fea
 3. **Access the applications**
    - **Frontend**: http://localhost:5173
    - **API**: http://localhost:8081
+   - **PostgreSQL**: localhost:5433 (inside Docker: `db:5432`)
    - **Meilisearch**: http://localhost:7700
    - **MailHog**: http://localhost:8025
 
@@ -176,10 +177,10 @@ cp api/env.example api/.env
 ```
 
 Key configuration options:
-- Database credentials
+- Database credentials (PostgreSQL)
 - Redis settings
 - Meilisearch configuration
-- Stripe API keys
+- Embeddings: `EMBEDDINGS_DRIVER=mock|openai`, `OPENAI_API_KEY`, `OPENAI_EMBEDDING_MODEL`
 - Feature flags
 
 ### Feature Flags
@@ -201,6 +202,10 @@ make test
 # or
 docker compose exec php php artisan test
 ```
+
+Notes:
+- Tests use in‑memory SQLite via `phpunit.xml.dist` for speed in CI/local.
+- For background jobs during local development, set `QUEUE_CONNECTION=sync` in `api/.env` (or run a worker).
 
 ### Frontend Tests
 ```bash
